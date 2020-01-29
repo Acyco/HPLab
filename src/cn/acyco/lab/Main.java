@@ -1,7 +1,8 @@
 package cn.acyco.lab;
 
-import cn.acyco.lab.util.Util;
-import javafx.scene.Scene;
+import cn.acyco.lab.config.Config;
+import cn.acyco.lab.config.ServerConfig;
+import cn.acyco.lab.config.ServerConfigEntry;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,19 +14,36 @@ import java.util.Scanner;
  */
 public class Main {
     public static Process process; 
+    
 
     public static void main(String[] args) throws Exception {
         for (String arg : args) {
             System.out.println(arg);
         }
 
-        Util.EnumOS os = Util.getOSType();
+        Config.loadServerConfig();
+        ServerConfig config = Config.serverConfig;
+        for (String key : config.getKeys()) {
+            ServerConfigEntry serverConfigEntry = (ServerConfigEntry) config.getEntry(key);
+            System.out.println(serverConfigEntry.getName());
+            new Thread(() ->{
+                try {
+                    runCommond(serverConfigEntry.getRun_cmd());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            },serverConfigEntry.getName()).start();
+        }
+   
+      /*  Util.EnumOS os = Util.getOSType();
         if (os == Util.EnumOS.WINDOWS) {
             
         }
         System.out.println(new File(".").getAbsoluteFile());
         runCommond("java -jar server.jar");
-
+*/
 
     }
 

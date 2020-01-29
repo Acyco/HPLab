@@ -1,0 +1,16 @@
+.git
+.idea
+*.iml
+*.txt
+logs
+world
+banned-ips.json
+banned-players.json
+ops.json
+usercache.json
+whitelist.json
+server.jar
+server.properties
+
+
+
